@@ -1,0 +1,36 @@
+<div class="table-container" style="overflow-x: scroll; max-height: 380px">
+  <table class="table table-hover" style="padding: 0; margin: 0">
+    <thead class="">
+      <tr>
+        <th class="table-title">
+          {{ tableTabType === "brands" ? "Brand" : "Division" }}
+        </th>
+        <th class="table-title">Amount (taka)</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (item of divisionsDataList; track $index) {
+      <tr
+        (click)="
+          tableTabType === 'demographic'
+            ? showDistrictsHandler(item)
+            : tableTabType === 'brands'
+            ? showBrandDetails(item.id)
+            : ''
+        "
+      >
+        <td style="color: #282b31; font-size: 14px">{{ item?.name }}</td>
+        <td style="text-align: right; font-size: 14px; font-weight: 700">
+          @if (tableTabType !== "market_share") {
+          <ng-container>৳</ng-container>
+          }
+          {{ formatNumber(item?.amount ?? 0) }}
+          @if (tableTabType === "market_share") {
+          <ng-container>%</ng-container>
+          }
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</div>

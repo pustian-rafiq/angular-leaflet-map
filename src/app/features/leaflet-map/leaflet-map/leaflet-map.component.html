@@ -1,0 +1,35 @@
+<div class="map-container">
+  <app-map
+    [divisionsList]="divisionsList"
+    [isShowDivisionDetails]="isShowDivisionDetails"
+    (showDistrictsEvent)="getDictrictDataByDivId($event)"
+  />
+
+  <div class="search-form-overlay">
+    @if (!isOpenSearchForm) {
+    <div class="search-bar" id="searchBar">
+      <input type="text" placeholder="Search" readonly (click)="openModal()" />
+      <i class="fas fa-search"></i>
+    </div>
+    } @else {
+    <app-search-form
+      (closeModalEmiter)="closeModal()"
+      (searchParamEmiter)="searchHandler($event)"
+    ></app-search-form>
+    }
+  </div>
+
+  @if(divisionsList.length > 0) {
+
+  <div class="show-results-overlay">
+    <app-show-results
+      [divisionName]="divisionName"
+      [isShowDivisionDetails]="isShowDivisionDetails"
+      [divisionsDataList]="divisionsList"
+      (showDistrictsEvent)="getDictrictDataByDivId($event)"
+      (goBackEvent)="showPreviousData($event)"
+      (tabClickEvent)="getTabWiseData($event)"
+    ></app-show-results>
+  </div>
+  }
+</div>

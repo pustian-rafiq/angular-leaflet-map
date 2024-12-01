@@ -1,0 +1,57 @@
+<div class="container mt-1 search-form">
+  <div class="modal-header header-icon mb-3">
+    <h5 class="modal-title" id="searchModalLabel">Search</h5>
+    <i
+      class="fas fa-chevron-up"
+      style="cursor: pointer"
+      (click)="closeModal()"
+    ></i>
+  </div>
+  <form [formGroup]="searchForm" (ngSubmit)="searchHandler()">
+    <div class="mb-3">
+      <label for="genericBrand" class="form-label">Generic/Brand</label>
+      <input
+        type="text"
+        class="form-control form-input"
+        id="genericBrand"
+        formControlName="brand_name"
+        placeholder="Search by generic/brand..."
+        appClearInput
+      />
+    </div>
+    <div class="mb-3">
+      <label for="vendor" class="form-label">Vendor</label>
+      <input
+        type="text"
+        class="form-control form-input"
+        id="vendor"
+        formControlName="vendor_name"
+        placeholder="Search by location..."
+        appClearInput
+      />
+    </div>
+    <div class="mb-3">
+      <label for="startDate" class="form-label">Start date</label>
+      <input
+        type="date"
+        formControlName="start_date"
+        class="form-control form-input"
+        id="startDate"
+        appClearInput
+      />
+    </div>
+    <div class="mb-3">
+      <label for="endDate" class="form-label">End date</label>
+      <input
+        type="date"
+        formControlName="end_date"
+        class="form-control form-input"
+        id="endDate"
+        appClearInput
+      />
+    </div>
+    <button type="submit" class="btn btn-success w-100">
+      <i class="fas fa-search"></i> Search
+    </button>
+  </form>
+</div>
