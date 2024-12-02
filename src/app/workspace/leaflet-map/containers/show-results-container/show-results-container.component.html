@@ -1,0 +1,12 @@
+<app-show-results
+  [divisionName]="divisionName"
+  [isShowDivisionDetails]="isShowDivisionDetails"
+  [divisionsDataList]="divisionsDataList"
+  [showBrandDetails]="showBrandDetails"
+  [tableTabType]="tableTabType"
+  [totalAmount]="totalAmount"
+  (showDistrictsEvent)="showDistrictsHandler($event)"
+  (goBackEvent)="goBack()"
+  (tabClickEvent)="tabHandler($event)"
+  (showBrandDetailsEvent)="showBrandDetailsHandler($event)"
+></app-show-results>

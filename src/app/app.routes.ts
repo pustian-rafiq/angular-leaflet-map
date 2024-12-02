@@ -9,14 +9,14 @@ export const routes: Routes = [
   {
     path: 'auth',
     loadChildren: () =>
-      import('./features/authentication/auth.routes').then(
+      import('./workspace/auth/auth.routes').then(
         (routes) => routes.authRoutes
       ),
   },
   {
     path: 'leaflet-map',
     loadChildren: () =>
-      import('./features/leaflet-map/map.routes').then(
+      import('./workspace/leaflet-map/map.routes').then(
         (routes) => routes.mapRoutes
       ),
   },
