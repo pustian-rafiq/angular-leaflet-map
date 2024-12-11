@@ -9,24 +9,32 @@
       </tr>
     </thead>
     <tbody>
-      @for (item of divisionsDataList; track $index) {
+      @for (item of data; track $index) {
       <tr
         (click)="
           tableTabType === 'demographic'
             ? showDistrictsHandler(item)
             : tableTabType === 'brands'
-            ? item.id
-              ? showBrandDetails(item.id)
-              : ''
+            ? showBrandDetails(0)
             : ''
         "
       >
-        <td style="color: #282b31; font-size: 14px">{{ item?.name }}</td>
+        <td style="color: #282b31; font-size: 14px">
+          {{ item?.divisionName || item.districtName || item.drugName }}
+        </td>
         <td style="text-align: right; font-size: 14px; font-weight: 700">
           @if (tableTabType !== "market_share") {
           <ng-container>৳</ng-container>
           }
-          {{ formatNumber(item?.amount ?? 0) }}
+          {{
+            formatNumber(
+              tableTabType === "market_share"
+                ? item.salesPercentage || 0
+                : tableTabType === "demographic"
+                ? item?.totalSales || item.districtSales || 0
+                : item.totalAmount || 0
+            )
+          }}
           @if (tableTabType === "market_share") {
           <ng-container>%</ng-container>
           }

@@ -1,6 +1,19 @@
+export interface SearchParamForDrugReport {
+  startDate: string | null;
+  endDate: string | null;
+  drugId: number | null;
+}
+export interface SearchFormParam {
+  genericId: number;
+  vendorId: number;
+  startDate: string | null;
+  endDate: string | null;
+}
 export interface SearchParam {
-  brand_name: string | null;
-  vendor_name: string | null;
-  start_date: Date | null;
-  end_date: Date | null;
+  genericId: number;
+  vendorId: number;
+  startDate: string | null;
+  endDate: string | null;
+  divId: number | null;
+  limit: number | null;
 }

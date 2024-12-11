@@ -1,142 +1,11 @@
-// import { ChangeDetectorRef, Component } from '@angular/core';
-// import { HelperService } from '../../../../service/helper.service';
-// import { MapService } from '../../../../service/map.service';
-// import {
-//   DistrictListView,
-//   DivisionListView,
-// } from '../../models/division.models';
-// import { MapComponent } from '../../views/map/map.component';
-// import { SearchFormContainerComponent } from '../search-form-container/search-form-container.component';
-// import { ShowResultsContainerComponent } from '../show-results-container/show-results-container.component';
-
-// @Component({
-//   selector: 'app-leaflet-map-container',
-//   standalone: true,
-//   imports: [
-//     MapComponent,
-//     SearchFormContainerComponent,
-//     ShowResultsContainerComponent,
-//   ],
-//   templateUrl: './leaflet-map-container.component.html',
-//   styleUrl: './leaflet-map-container.component.css',
-// })
-// export class LeafletMapComponent {
-//   public isOpenSearchForm: boolean = false;
-//   public isShowDivisionDetails: boolean = false;
-//   public divisionsList: any[] = [];
-//   public storeDivisionsList: any[] = [];
-//   public districtDataList: DistrictListView[] = [];
-//   public divisionName: string = '';
-//   // public brandsList: BrandListView[] = [];
-//   // public marketSharesList: DivisionListView[] = [];
-//   constructor(
-//     private mapService: MapService,
-//     private cdr: ChangeDetectorRef,
-//     private helperService: HelperService
-//   ) {}
-
-//   ngOnInit() {
-//     // remove tabType from local storage
-//     this.helperService.removeTabItem();
-//   }
-//   openModal() {
-//     this.isOpenSearchForm = true;
-//   }
-//   closeModal() {
-//     this.isOpenSearchForm = false;
-//   }
-//   searchHandler(searchData: any) {
-//     console.log('searchData', searchData);
-//     this.mapService.search(searchData).subscribe({
-//       next: (response) => {
-//         console.log('response', response);
-//         this.storeDivisionsList = response;
-//         this.divisionsList = response;
-//       },
-//       error: (error) => {
-//         console.error(error);
-//       },
-//     });
-//   }
-//   public getDivisionWiseData() {
-//     this.mapService.getDivisionWiseData().subscribe({
-//       next: (response) => {
-//         // save the division data for later use
-//         this.storeDivisionsList = response;
-//         this.divisionsList = response;
-//         console.log('res', response);
-//       },
-//       error: (error) => {
-//         console.error(error);
-//       },
-//     });
-//   }
-//   public getDictrictDataByDivId(division: DivisionListView) {
-//     this.mapService.getDistrictDataByDivId().subscribe({
-//       next: (response) => {
-//         console.log('res', response);
-//         if (response) {
-//           this.isShowDivisionDetails = true;
-//           this.districtDataList = response.filter(
-//             (district) => district.division_id === division.id
-//           );
-//           this.divisionsList = this.districtDataList;
-//           this.divisionName = division.name;
-//           this.cdr.detectChanges();
-//         }
-//       },
-//       error: (error) => {
-//         console.error(error);
-//       },
-//     });
-//   }
-//   showPreviousData(data: any) {
-//     if (data === 'back') {
-//       this.helperService.setTabItem('demographic');
-//       this.divisionsList = this.storeDivisionsList;
-//       this.isShowDivisionDetails = false;
-//       this.divisionName = '';
-//     }
-//   }
-//   getTabWiseData(tabType: string) {
-//     if (tabType === 'brands') {
-//       this.getBrandsData();
-//     } else if (tabType === 'demographic') {
-//       this.getDivisionWiseData();
-//     } else {
-//       this.getMarketShareData();
-//     }
-//   }
-//   getBrandsData() {
-//     this.mapService.getBrandsData().subscribe({
-//       next: (response) => {
-//         console.log('res', response);
-//         this.divisionsList = response;
-//       },
-//       error: (error) => {
-//         console.error(error);
-//       },
-//     });
-//   }
-//   getMarketShareData() {
-//     this.mapService.getMarketShareData().subscribe({
-//       next: (response) => {
-//         console.log('res', response);
-//         this.divisionsList = response;
-//       },
-//       error: (error) => {
-//         console.error(error);
-//       },
-//     });
-//   }
-// }
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { HelperService } from '../../../../service/helper.service';
 import { MapService } from '../../../../service/map.service';
-import {
-  DistrictListView,
-  DivisionListView,
-} from '../../models/division.models';
+import { DistrictCoordinateResponse } from '../../models/demographic.model';
+import { DivisionListView, DivisionView } from '../../models/division.models';
+import { MarketShareResponse } from '../../models/market-share.model';
+import { SearchFormParam, SearchParam } from '../../models/search.models';
+import { TopBrandResponse } from '../../models/top-brands.model';
 import { MapComponent } from '../../views/map/map.component';
 import { SearchFormContainerComponent } from '../search-form-container/search-form-container.component';
 import { ShowResultsContainerComponent } from '../show-results-container/show-results-container.component';
@@ -155,11 +24,16 @@ import { ShowResultsContainerComponent } from '../show-results-container/show-re
 export class LeafletMapContainerComponent implements OnInit {
   public isOpenSearchForm: boolean = false;
   public isShowDivisionDetails: boolean = false;
-  public divisionsList: any[] = [];
-  public storeDivisionsList: any[] = [];
-  public districtDataList: DistrictListView[] = [];
+  public isShowResults: boolean = false;
+  public divisionsDataList: DivisionView[] = [];
+  public topBrandList: TopBrandResponse[] = [];
+  public marketShareList: MarketShareResponse[] = [];
+  public storeDivisionsList: DivisionView[] = [];
+  public districtDataList: DistrictCoordinateResponse[] = [];
+  public totalBdSales: number = 0;
   public divisionName: string = '';
-
+  public searchParamData: any;
+  public divisionId: any;
   constructor(
     private mapService: MapService,
     private cdr: ChangeDetectorRef,
@@ -179,13 +53,52 @@ export class LeafletMapContainerComponent implements OnInit {
     this.isOpenSearchForm = false;
   }
 
-  searchHandler(searchData: any) {
-    console.log('searchData', searchData);
-    this.mapService.search(searchData).subscribe({
-      next: (response) => {
-        console.log('response', response);
-        this.storeDivisionsList = response;
-        this.divisionsList = response;
+  searchHandler(searchData: SearchFormParam) {
+    this.searchParamData = {
+      genericId: Number(searchData.genericId),
+      vendorId: Number(searchData.vendorId),
+      startDate: searchData.startDate,
+      endDate: searchData.endDate,
+    };
+    const tabType = this.helperService.getTabItem() || 'demographic';
+    this.getTabWiseData(tabType);
+    // this.getDivisionWiseData(this.searchParamData);
+  }
+  getTabWiseData(tabType: string) {
+    const paramObj = {
+      ...this.searchParamData,
+      divId: this.divisionId || localStorage.getItem('divisionId'),
+      limit: 10,
+    };
+    if (tabType === 'brands') {
+      this.getBrandsData(paramObj);
+    } else if (
+      tabType === 'demographic' &&
+      this.divisionId &&
+      this.divisionsDataList
+    ) {
+      this.isShowDivisionDetails = false;
+      this.getDistrictwiseSearch(paramObj);
+    } else if (tabType === 'demographic') {
+      this.isShowDivisionDetails = false;
+      this.getDivisionWiseData(this.searchParamData);
+    } else {
+      this.getMarketShareData(paramObj);
+    }
+  }
+
+  public getDivisionWiseData(searchParamData: SearchParam) {
+    this.mapService.getDivisionWiseData(searchParamData).subscribe({
+      next: (response: any) => {
+        this.storeDivisionsList = response?.divisionSales;
+        this.divisionsDataList = response?.divisionSales;
+        this.totalBdSales = response?.totalBDSales;
+        this.districtDataList = [];
+        this.topBrandList = [];
+        this.marketShareList = [];
+        this.isShowResults = true;
+        console.log('res', response);
+        console.log('res divisionsList', this.divisionsDataList);
       },
       error: (error) => {
         console.error(error);
@@ -193,30 +106,41 @@ export class LeafletMapContainerComponent implements OnInit {
     });
   }
 
-  public getDivisionWiseData() {
-    this.mapService.getDivisionWiseData().subscribe({
+  public getDistrictCoordinates(division: DivisionListView) {
+    this.divisionId = division?.id || 2; // divisionId is not available in the API so i put 2 as default
+    this.mapService.getDistrictCoordinates(Number(this.divisionId)).subscribe({
       next: (response) => {
-        this.storeDivisionsList = response;
-        this.divisionsList = response;
-        console.log('res', response);
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
-  }
-
-  public getDictrictDataByDivId(division: DivisionListView) {
-    this.mapService.getDistrictDataByDivId().subscribe({
-      next: (response) => {
-        console.log('res', response);
         if (response) {
           this.isShowDivisionDetails = true;
-          this.districtDataList = response.filter(
-            (district) => district.division_id === division.id
-          );
-          this.divisionsList = this.districtDataList;
-          this.divisionName = division.name;
+          this.districtDataList = response;
+          this.topBrandList = [];
+          this.marketShareList = [];
+          this.divisionName = division.divisionName;
+          this.getDistrictwiseSearch(this.searchParamData);
+          this.cdr.detectChanges();
+        }
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
+  public getDistrictwiseSearch(paramObj: SearchParam) {
+    this.mapService.getDistrictwiseSearch(paramObj).subscribe({
+      next: (response) => {
+        if (response) {
+          this.isShowDivisionDetails = true;
+          this.districtDataList = this.districtDataList.map((district) => {
+            return {
+              ...district,
+              districtSales: response.find(
+                (dist: any) => dist.districtName === district?.districtName
+              )?.districtSales,
+            };
+          });
+          this.divisionsDataList = [];
+          this.topBrandList = [];
+          this.marketShareList = [];
           this.cdr.detectChanges();
         }
       },
@@ -229,27 +153,19 @@ export class LeafletMapContainerComponent implements OnInit {
   showPreviousData(data: any) {
     if (data === 'back') {
       this.helperService.setTabItem('demographic');
-      this.divisionsList = this.storeDivisionsList;
+      this.divisionsDataList = this.storeDivisionsList;
       this.isShowDivisionDetails = false;
       this.divisionName = '';
     }
   }
 
-  getTabWiseData(tabType: string) {
-    if (tabType === 'brands') {
-      this.getBrandsData();
-    } else if (tabType === 'demographic') {
-      this.getDivisionWiseData();
-    } else {
-      this.getMarketShareData();
-    }
-  }
-
-  getBrandsData() {
-    this.mapService.getBrandsData().subscribe({
+  getBrandsData(topBrandSearchParam: SearchParam) {
+    this.mapService.getTopBrandsSearch(topBrandSearchParam).subscribe({
       next: (response) => {
-        console.log('res', response);
-        this.divisionsList = response;
+        this.topBrandList = response;
+        this.districtDataList = [];
+        this.marketShareList = [];
+        this.divisionId = '';
       },
       error: (error) => {
         console.error(error);
@@ -257,11 +173,14 @@ export class LeafletMapContainerComponent implements OnInit {
     });
   }
 
-  getMarketShareData() {
-    this.mapService.getMarketShareData().subscribe({
+  getMarketShareData(marketShareSearchParam: SearchParam) {
+    this.mapService.getMarketShareSearch(marketShareSearchParam).subscribe({
       next: (response) => {
         console.log('res', response);
-        this.divisionsList = response;
+        this.marketShareList = response;
+        this.divisionId = '';
+        // this.districtDataList = [];
+        // this.topBrandList = [];
       },
       error: (error) => {
         console.error(error);

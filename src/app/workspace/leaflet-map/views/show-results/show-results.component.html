@@ -16,7 +16,7 @@
     </div>
   </div>
   <div *ngIf="showBrandDetails">
-    <app-brand-details></app-brand-details>
+    <app-brand-details [brandDetailData]="brandDetailData"></app-brand-details>
   </div>
   <div *ngIf="!showBrandDetails">
     <div class="d-flex flex-column bg-white rounded-2 p-4">
@@ -32,7 +32,7 @@
       </div>
       <div>
         <p class="total-sales">Total sales</p>
-        <h3 class="total-amount">৳{{ totalAmount | number }}</h3>
+        <h3 class="total-amount">৳{{ totalBdSales | number }}</h3>
       </div>
     </div>
 
@@ -71,6 +71,7 @@
             role="tab"
             aria-controls="tab2"
             aria-selected="false"
+            [disabled]="!divisionId"
             (click)="onTabClick('brands')"
           >
             Top Brands
@@ -86,6 +87,7 @@
             role="tab"
             aria-controls="tab3"
             aria-selected="false"
+            [disabled]="!divisionId"
             (click)="onTabClick('market_share')"
           >
             Market Share
@@ -109,6 +111,7 @@
           <app-table
             [tableTabType]="tableTabType"
             [divisionsDataList]="divisionsDataList"
+            [districtDataList]="districtDataList"
             (showDistrictsEvent)="onShowDistricts($event)"
           ></app-table>
         </div>
@@ -120,7 +123,7 @@
         >
           <app-table
             [tableTabType]="tableTabType"
-            [divisionsDataList]="divisionsDataList"
+            [topBrandList]="topBrandList"
             (showBrandDetailsEvent)="onShowBrandDetails($event)"
           ></app-table>
         </div>
@@ -133,7 +136,7 @@
         >
           <app-table
             [tableTabType]="tableTabType"
-            [divisionsDataList]="divisionsDataList"
+            [marketShareList]="marketShareList"
           ></app-table>
         </div>
       </div>

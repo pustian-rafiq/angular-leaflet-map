@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { HelperService } from '../../../../service/helper.service';
+import { SearchFormParam } from '../../models/search.models';
 import { SearchFormComponent } from '../../views/search-form/search-form.component';
 
 @Component({
@@ -24,24 +25,13 @@ export class SearchFormContainerComponent implements OnInit {
 
   ngOnInit() {
     this.tabType = this.helperService.getTabItem();
-    this.initializeSearchForm();
   }
 
-  initializeSearchForm() {
-    this.searchForm = this.formBuilder.group({
-      brand_name: [''],
-      vendor_name: [''],
-      start_date: [''],
-      end_date: [''],
-    });
-  }
-
-  searchHandler() {
-    console.log('searchHandler', this.searchForm.value);
+  searchHandler(searchParam: SearchFormParam) {
     console.log('this.tabType', this.tabType);
-    if (this.searchForm.valid) {
-      console.log(this.searchForm.value);
-      this.searchParamEmiter.emit(this.searchForm.value);
+    console.log('searchParam', searchParam);
+    if (searchParam) {
+      this.searchParamEmiter.emit(searchParam);
       this.helperService.setTabItem(this.tabType || 'demographic');
       // Add your search logic here
     }

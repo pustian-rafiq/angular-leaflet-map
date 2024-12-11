@@ -1,8 +1,9 @@
 <div class="map-container">
   <app-map
-    [divisionsList]="divisionsList"
+    [divisionsDataList]="divisionsDataList"
+    [districtDataList]="districtDataList"
     [isShowDivisionDetails]="isShowDivisionDetails"
-    (showDistrictsEvent)="getDictrictDataByDivId($event)"
+    (showDistrictsEvent)="getDistrictCoordinates($event)"
   />
 
   <div class="search-form-overlay">
@@ -19,14 +20,19 @@
     }
   </div>
 
-  @if(divisionsList.length > 0) {
+  @if(isShowResults) {
 
   <div class="show-results-overlay">
     <app-show-results-container
       [divisionName]="divisionName"
       [isShowDivisionDetails]="isShowDivisionDetails"
-      [divisionsDataList]="divisionsList"
-      (showDistrictsEvent)="getDictrictDataByDivId($event)"
+      [divisionsDataList]="divisionsDataList"
+      [districtDataList]="districtDataList"
+      [topBrandList]="topBrandList"
+      [marketShareList]="marketShareList"
+      [searchParamData]="searchParamData"
+      [totalBdSales]="totalBdSales"
+      (showDistrictsEvent)="getDistrictCoordinates($event)"
       (goBackEvent)="showPreviousData($event)"
       (tabClickEvent)="getTabWiseData($event)"
     ></app-show-results-container>

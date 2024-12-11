@@ -2,66 +2,66 @@
   "divisions": [
     {
       "id": "1",
-      "name": "Barishal",
+      "divisionName": "Barishal",
       "bn_name": "বরিশাল",
-      "lat": "22.701002",
-      "long": "90.353451",
+      "latitude": "22.701002",
+      "longitude": "90.353451",
       "amount": 3434344
     },
     {
       "id": "2",
-      "name": "Chattogram",
+      "divisionName": "Chattogram",
       "bn_name": "চট্টগ্রাম",
-      "lat": "22.356851",
-      "long": "91.783182",
+      "latitude": "22.356851",
+      "longitude": "91.783182",
       "amount": 3434344
     },
     {
       "id": "3",
-      "name": "Dhaka",
+      "divisionName": "Dhaka",
       "bn_name": "ঢাকা",
-      "lat": "23.810332",
-      "long": "90.412518",
+      "latitude": "23.810332",
+      "longitude": "90.412518",
       "amount": 3434344
     },
     {
       "id": "4",
-      "name": "Khulna",
+      "divisionName": "Khulna",
       "bn_name": "খুলনা",
-      "lat": "22.845641",
-      "long": "89.540328",
+      "latitude": "22.845641",
+      "longitude": "89.540328",
       "amount": 3434344
     },
     {
       "id": "5",
-      "name": "Rajshahi",
+      "divisionName": "Rajshahi",
       "bn_name": "রাজশাহী",
-      "lat": "24.363589",
-      "long": "88.624135",
+      "latitude": "24.363589",
+      "longitude": "88.624135",
       "amount": 3434344
     },
     {
       "id": "6",
-      "name": "Rangpur",
+      "divisionName": "Rangpur",
       "bn_name": "রংপুর",
-      "lat": "25.743892",
-      "long": "89.275227",
+      "latitude": "25.743892",
+      "longitude": "89.275227",
       "amount": 3434344
     },
     {
       "id": "7",
-      "name": "Sylhet",
+      "divisionName": "Sylhet",
       "bn_name": "সিলেট",
-      "lat": "24.894929",
-      "long": "91.868706",
+      "latitude": "24.894929",
+      "longitude": "91.868706",
       "amount": 3434344
     },
     {
       "id": "8",
-      "name": "Mymensingh",
+      "divisionName": "Mymensingh",
       "bn_name": "ময়মনসিংহ",
-      "lat": "24.747149",
-      "long": "90.420273",
+      "latitude": "24.747149",
+      "longitude": "90.420273",
       "amount": 3434344
     }
   ]

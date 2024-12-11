@@ -1,5 +1,4 @@
 <app-search-form
-  [searchForm]="searchForm"
-  (search)="searchHandler()"
+  (searchParamEmitter)="searchHandler($event)"
   (close)="closeModal()"
 ></app-search-form>
